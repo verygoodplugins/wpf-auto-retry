@@ -29,7 +29,7 @@ function wpf_schedule_retry( $method, $args, $cid, $result ) {
 
 		$user_id = wp_fusion()->user->get_user_id( $cid );
 
-		wpf_log( 'notice', $user_id, 'Scheduling retry for ' . current_time( get_option( 'date_format' ) . ' H:i:s' ), array( 'source' => 'auto-retry' ) );
+		wpf_log( 'notice', $user_id, 'Scheduling retry for ' . date( get_option( 'date_format' ) . ' H:i:s', current_time( 'timestamp' ) + 300 ), array( 'source' => 'auto-retry' ) );
 
 		wp_schedule_single_event( time() + 300, 'wpf_auto_retry', array( $method, $args, $cid ) );
 
