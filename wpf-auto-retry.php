@@ -4,7 +4,7 @@
 Plugin Name: WP Fusion - Auto Retry
 Description: Sets a cron task to retry outgoing API calls after 5 minutes in cases of an API timeout
 Plugin URI: https://wpfusion.com/
-Version: 1.0
+Version: 1.1
 Author: Very Good Plugins
 Author URI: https://verygoodplugins.com/
 */
@@ -57,6 +57,16 @@ function wpf_do_retry( $method, $args, $cid ) {
 	remove_action( 'wpf_api_error', 'wpf_schedule_retry', 10, 4 );
 
 	$result = call_user_func_array( array( wp_fusion()->crm, $method ), $args );
+
+	if ( is_wp_error( $result ) ) {
+
+		wpf_log( 'error', $user_id, 'Scheduled retry also failed with method <code>' . $method . '</code>: ' . $result->get_error_message(), array( 'source' => 'auto-retry', 'args' => $args ) );
+
+	} else {
+
+		wpf_log( 'notice', $user_id, 'Scheduled retry for <code>' . $method . '</code> succeeded!', array( 'source' => 'auto-retry' ) );
+
+	}
 
 }
 
