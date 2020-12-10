@@ -20,7 +20,7 @@ Author URI: https://verygoodplugins.com/
 function wpf_schedule_retry( $method, $args, $cid, $result ) {
 
 	// Only run on timeouts
-	if ( false === strpos( $result->get_error_message(), 'cURL error 28' ) ) {
+	if ( false === strpos( $result->get_error_message(), 'cURL error 28' ) && false === strpos( $result->get_error_message(), 'Internal Server Error' ) ) {
 		return;
 	}
 
